@@ -17,7 +17,7 @@ const Sauces = ({ authState }) => {
     }
 
     if (authState === authStates.LOGGED_OUT) {
-        return <Redirect to="/logowanie" replace />;
+        return <Redirect to="/logowanie" />;
     }
 
     return (

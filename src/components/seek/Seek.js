@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
+import { withStyles } from "@material-ui/core/styles";
+import { green } from "@material-ui/core/colors";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import "./Seek.css";
@@ -55,7 +57,7 @@ const Seek = (props) => {
         let helpTab = [];
         recipes.forEach((recipe) => {
             let count = 0;
-            Object.entries(state).forEach((data) => {
+            Object.entries(state).map((data) => {
                 if (data[1] === true) {
                     if (recipe.ingredients.indexOf(data[0]) > -1) {
                         count++;
@@ -78,7 +80,7 @@ const Seek = (props) => {
 
     const handleSort = (helpTab) => {
         let tab = [];
-        Object.entries(state).forEach((data) => {
+        Object.entries(state).map((data) => {
             if (data[1] === true) {
                 tab.push(data);
             }
@@ -90,7 +92,7 @@ const Seek = (props) => {
             let count = 0;
             element2.ingredients.forEach((ingredient, index2) => {
                 tab.forEach((element) => {
-                    if (ingredient === element[0]) {
+                    if (ingredient == element[0]) {
                         count++;
                     }
                 });

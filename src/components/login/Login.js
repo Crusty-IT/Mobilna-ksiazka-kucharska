@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = (props) => {
     const classes = useStyles();
+    const [redirect, setRedirect] = useState(false);
     const [error, setError] = useState("");
     const [values, setValues] = useState({ email: "", password: "" });
 
@@ -29,7 +30,7 @@ const Login = (props) => {
         const target = event.target;
         const value = target.value;
         const name = target.name;
-        name === "email"
+        name == "email"
             ? setValues({ email: value, password: values.password })
             : setValues({ email: values.email, password: value });
 
@@ -39,10 +40,10 @@ const Login = (props) => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        const validationError = validateEmailPassword(values.email, values.password);
+        const errorMsg = validateEmailPassword(values.email, values.password);
 
-        if (validationError) {
-            setError(validationError);
+        if (errorMsg) {
+            setError(errorMsg);
             return;
         }
 
@@ -64,6 +65,7 @@ const Login = (props) => {
         return <Redirect to="/"></Redirect>;
     }
 
+    const errorMsg = error;
     return (
         <div className="login-wrapper">
             <Container maxWidth="sm" className="login-container">

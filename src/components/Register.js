@@ -4,10 +4,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Button, Container, Grid, Card, Typography, Box } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 
-import { authStates, withAuth } from "../auth";
-import { createNewUser } from "../../utils/firebase";
-import Loader from "../loader/Loader";
-import { validateEmailPassword } from "../../utils/helpers";
+import { authStates, withAuth } from "./auth";
+import { createNewUser } from "../utils/firebase";
+import Loader from "./loader/Loader";
+import { validateEmailPassword } from "../utils/helpers";
 
 const useStyles = makeStyles((theme) => ({
     container: {

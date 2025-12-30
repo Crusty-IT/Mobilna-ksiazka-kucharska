@@ -2,11 +2,11 @@
 
 .howlist-page {
     min-height: 100vh;
-    background-color: #f8f9fa;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 .category-list-wrapper {
-    background-color: #f8f9fa;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     padding: 0 20px 80px 20px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
@@ -20,22 +20,21 @@
 .category-list-title {
     font-size: 2.2rem;
     font-weight: 700;
-    color: #2d3748;
+    color: #ffffff;
     margin: 0 0 10px 0;
 }
 
 .category-list-subtitle {
     font-size: 1.1rem;
-    color: #718096;
+    color: rgba(255, 255, 255, 0.7);
     margin: 0;
 }
 
 .category-list-card.MuiCard-root {
     background-color: #fff !important;
     border-radius: 12px !important;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05) !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2) !important;
     overflow: hidden !important;
-    border: 1px solid #edf2f7 !important;
 }
 
 .category-list.MuiList-root {

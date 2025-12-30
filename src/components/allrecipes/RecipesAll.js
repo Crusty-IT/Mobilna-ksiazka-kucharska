@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getRecipes } from "../../Api";
+import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { Card } from "@material-ui/core";
 import List from "@material-ui/core/List";
@@ -12,9 +13,23 @@ import Loader from "../loader/Loader";
 import { Redirect } from "react-router-dom";
 import "./RecipesAll.css";
 
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+    },
+    paper: {
+        height: 140,
+        width: 100,
+    },
+    icon: {
+        color: "rgba(255, 255, 255, 0.54)",
+    },
+}));
+
 const RecipesAll = (props) => {
     const [recipes, setRecipes] = useState([]);
     const [recipeAll, setRecipesAll] = useState([]);
+    const classes = useStyles();
 
     useEffect(() => {
         async function fetchData() {

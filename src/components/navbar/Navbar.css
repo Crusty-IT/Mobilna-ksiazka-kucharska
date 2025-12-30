@@ -1,7 +1,7 @@
 .navbar-appbar {
-    background: #ffffff !important;
-    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.05) !important;
-    border-bottom: 1px solid #edf2f7;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    border: none !important;
 }
 
 .navbar-toolbar-desktop {
@@ -31,21 +31,22 @@
 .navbar-logo-link {
     font-size: 24px;
     font-weight: 800;
-    color: #2d3748;
+    color: #ffffff;
     text-decoration: none;
     letter-spacing: -0.5px;
     transition: all 0.3s ease;
 }
 
 .navbar-logo-link:hover {
-    color: #4f46e5;
+    color: #ffffff;
+    opacity: 0.9;
     transform: translateY(-1px);
 }
 
 .navbar-logo-mobile {
     font-size: 20px;
     font-weight: 800;
-    color: #2d3748;
+    color: #ffffff;
     letter-spacing: -0.3px;
 }
 
@@ -61,7 +62,7 @@
 }
 
 .navbar-button {
-    color: #4a5568 !important;
+    color: #ffffff !important;
     font-size: 15px !important;
     font-weight: 600 !important;
     text-transform: none !important;
@@ -72,8 +73,8 @@
 }
 
 .navbar-button:hover {
-    background: #f7fafc !important;
-    color: #4f46e5 !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
     transform: translateY(-2px);
 }
 
@@ -82,18 +83,18 @@
 }
 
 .navbar-user-icon {
-    color: #4a5568 !important;
+    color: #ffffff !important;
     transition: all 0.3s ease !important;
 }
 
 .navbar-user-icon:hover {
-    background: #f7fafc !important;
-    color: #4f46e5 !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
     transform: scale(1.1);
 }
 
 .navbar-menu-button {
-    color: #4a5568 !important;
+    color: #ffffff !important;
 }
 
 .navbar-drawer {

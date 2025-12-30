@@ -35,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar = (props) => {
     const classes = useStyles();
-    const [anchorEl, setAnchorEl] = useState(null);
     const [anchorEl1, setAnchorEl1] = useState(null);
     const [mobileView, setMobileView] = useState(false);
     const [open, setOpen] = useState(false);
@@ -63,13 +62,7 @@ const Navbar = (props) => {
     const handleProfileMenuOpen = (event) => {
         setAnchorEl1(event.currentTarget);
     };
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
     const handleMenuClose = () => {
         setAnchorEl1(null);
         handleSignOut();

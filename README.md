@@ -1,12 +1,70 @@
-## `using the application features`
+# Mobilna Książka Kucharska
 
- 1. **Installable**<br/>
-		**For Desktop and Laptop**
-		Open url [https://simple-react-pwa.web.app](https://simple-react-pwa.web.app) in the browser (google chrome on any platform should work good). Click the 3 dots on the chrome address bar and click on `install simple-react-app`. A popup should appear, click on install that confirms installing the application.
-		After installing you should see the application installed in the desktop. Open the application installed to get native experience.<br/>
-		**For Mobile Devices**
-		Open url [https://simple-react-pwa.web.app](https://simple-react-pwa.web.app/) in the browser (google chrome on any platform should work good). Tap the 3 dots on the chrome address bar and click on `Add to home screen`. A popup should appear, Tap on add that confirms installing the application.
-		After installing you should see the application installed on you device. Open the application installed to get native experience.
-		
- 2. **Offline usage**
-		This application pre-caches static assets. Enter a valid Github handler,  (error handling in progress) the repositories of the user will be displayed. now, go offline and close the application and re-open the application. Enter the same handler used before, the cached response is shown. This can be tested by creating a new repository in the github. the newly created repository will not be displayed in the PWA application because it serves cached response.
+Aplikacja mobilna (PWA) będąca pomocnikiem kuchennym, ułatwiająca gotowanie poprzez dostarczanie przepisów, instrukcji przygotowania składników oraz wbudowany minutnik.
+
+## Spis treści
+- [Opis aplikacji](#opis-aplikacji)
+- [Wymagania systemowe](#wymagania-systemowe)
+- [Instrukcja instalacji i uruchomienia](#instrukcja-instalacji-i-uruchomienia)
+- [Struktura projektu](#struktura-projektu)
+- [Dokumentacja dodatkowa](#dokumentacja-dodatkowa)
+
+## Opis aplikacji
+Mobilna Książka Kucharska to narzędzie stworzone z myślą o użytkownikach szukających szybkich informacji o czasie gotowania warzyw, kasz, makaronów oraz dostępu do bazy przepisów. Aplikacja oferuje:
+- Przeglądanie instrukcji gotowania konkretnych produktów.
+- Bazę przepisów kulinarnych.
+- Interaktywny minutnik kuchenny.
+- System autoryzacji użytkowników (Firebase).
+
+Umożliwia również działanie w trybie offline dzięki technologii PWA.
+
+## Wymagania systemowe
+- **Node.js**: wersja 12.x lub nowsza (zalecana 14.x+)
+- **NPM**: wersja 6.x lub nowsza
+- Przeglądarka internetowa z obsługą nowoczesnych standardów (Chrome, Firefox, Safari)
+
+## Instrukcja instalacji i uruchomienia
+
+### Klonowanie repozytorium
+```bash
+git clone <url-repozytorium>
+cd Mobilna-ksiazka-kucharska
+```
+
+### Instalacja zależności
+```bash
+npm install
+```
+
+### Uruchomienie aplikacji w trybie deweloperskim
+```bash
+npm start
+```
+Aplikacja będzie dostępna pod adresem [http://localhost:3000](http://localhost:3000).
+
+### Budowa wersji produkcyjnej
+```bash
+npm run build
+```
+
+## Podstawowe informacje o strukturze projektu
+- `src/components/` - komponenty interfejsu użytkownika podzielone na moduły.
+- `src/firebase/` - konfiguracja i metody integracji z Firebase.
+- `src/provider/` - dostawcy kontekstu (np. autoryzacja).
+- `src/utils/` - funkcje pomocnicze i konfiguracje.
+- `src/Api.js` - funkcje pobierające dane z bazy Firebase Realtime Database.
+
+## Dokumentacja dodatkowa
+Więcej szczegółów znajdziesz w folderze `docs/`:
+- [Architektura](docs/architecture.md)
+- [API i dane](docs/api.md)
+- [Komponenty](docs/components.md)
+- [Konfiguracja](docs/setup.md)
+- [Przewodnik dewelopera](docs/development.md)
+
+## Oryginalne funkcje PWA
+1. **Instalacja**
+   - **Desktop**: Otwórz [https://simple-react-pwa.web.app](https://simple-react-pwa.web.app), kliknij 3 kropki i wybierz "Zainstaluj simple-react-app".
+   - **Mobile**: Otwórz adres w Chrome, kliknij 3 kropki i wybierz "Dodaj do ekranu głównego".
+2. **Działanie offline**
+   - Aplikacja cache'uje zasoby statyczne, umożliwiając dostęp do interfejsu bez połączenia z internetem.

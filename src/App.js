@@ -1,6 +1,6 @@
 import React from "react";
 import "./components/All.css";
-import Register from "./components/Register";
+import Register from "./components/login/Register";
 import {Route, Switch} from "react-router-dom";
 import Intro from "./components/intro/Intro";
 import Seek from "./components/seek/Seek";

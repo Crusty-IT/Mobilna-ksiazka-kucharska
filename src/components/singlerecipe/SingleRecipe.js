@@ -37,7 +37,7 @@ const SingleRecipe = (props) => {
                                 <div className="single-recipe-content">
                                     <div className="single-recipe-section">
                                         <div className="single-recipe-section-header">
-                                            <span className="single-recipe-icon">🥘</span>
+                                            <span className="single-recipe-icon" role="img" aria-label="Kociołek">🥘</span>
                                             <h2 className="single-recipe-section-title">Składniki</h2>
                                         </div>
                                         <ul className="single-recipe-ingredients">
@@ -51,7 +51,7 @@ const SingleRecipe = (props) => {
                                     </div>
                                     <div className="single-recipe-section">
                                         <div className="single-recipe-section-header">
-                                            <span className="single-recipe-icon">👨‍🍳</span>
+                                            <span className="single-recipe-icon" role="img" aria-label="Kucharz">👨‍🍳</span>
                                             <h2 className="single-recipe-section-title">Sposób przygotowania</h2>
                                         </div>
                                         <div className="single-recipe-description">

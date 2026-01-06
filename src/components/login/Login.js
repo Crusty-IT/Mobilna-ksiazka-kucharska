@@ -1,20 +1,18 @@
-import React, {useState } from "react";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
-import { Button, Container, Grid } from "@material-ui/core";
-import { Card } from "@material-ui/core";
+import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
-import { authStates, withAuth } from "../auth";
-import en from "../../utils/i18n";
-import Loader from "../loader/Loader";
-import { signIn } from "../../utils/firebase";
-import { validateEmailPassword } from "../../utils/helpers";
+import { Button, TextField, Grid, Container } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import "./Login.css";
+import Loader from "../loader/Loader";
+import { validateEmailPassword } from "../../utils/validators";
+import { signIn } from "../../firebase/authMethods";
+import { authStates } from "../auth";
+import en from "../../utils/i18n";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         "& .MuiTextField-root": {
-            margin: theme.spacing(1),
+            margin: theme.spacing(0),
             width: "100%",
         },
     },
@@ -22,19 +20,14 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = (props) => {
     const classes = useStyles();
-    const [redirect, setRedirect] = useState(false);
     const [error, setError] = useState("");
     const [values, setValues] = useState({ email: "", password: "" });
 
     const handleInputChange = (event) => {
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
-        name == "email"
-            ? setValues({ email: value, password: values.password })
-            : setValues({ email: values.email, password: value });
+        const { name, value } = event.target;
+        setValues({ ...values, [name]: value });
 
-        setError(error);
+        if (error) setError("");
     };
 
     const handleSubmit = (event) => {
@@ -48,12 +41,8 @@ const Login = (props) => {
         }
 
         signIn(values.email, values.password)
-            .then(() => {
-                console.log("Signed In");
-            })
             .catch((e) => {
-                console.log("Error signing in", e);
-                setError("Nieprawidłowy adres e-mail/hasło");
+                setError("Nieprawidłowy adres e-mail lub hasło");
             });
     };
 
@@ -65,15 +54,14 @@ const Login = (props) => {
         return <Redirect to="/"></Redirect>;
     }
 
-    const errorMsg = error;
     return (
         <div className="login-wrapper">
-            <Container maxWidth="sm" className="login-container">
+            <Container className="login-container" maxWidth={false}>
                 <div className="login-header">
                     <h1 className="login-title">Zaloguj się</h1>
                     <p className="login-subtitle">Witaj ponownie! Zaloguj się do swojego konta</p>
                 </div>
-                <Card className="login-card">
+                <div className="login-card">
                     <form className={classes.root} noValidate autoComplete="off">
                         <Grid container spacing={3}>
                             <Grid item xs={12}>
@@ -87,6 +75,9 @@ const Login = (props) => {
                                     variant="outlined"
                                     fullWidth
                                     className="login-input"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -100,6 +91,9 @@ const Login = (props) => {
                                     variant="outlined"
                                     fullWidth
                                     className="login-input"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
                                 />
                             </Grid>
                             {error && (
@@ -113,7 +107,6 @@ const Login = (props) => {
                                 <Button
                                     onClick={handleSubmit}
                                     variant="contained"
-                                    color="primary"
                                     fullWidth
                                     className="login-button"
                                 >
@@ -130,9 +123,10 @@ const Login = (props) => {
                             </Grid>
                         </Grid>
                     </form>
-                </Card>
+                </div>
             </Container>
         </div>
     );
 };
-export default withAuth(Login);
+
+export default Login;

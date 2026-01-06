@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
-import { withStyles } from "@material-ui/core/styles";
-import { green } from "@material-ui/core/colors";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import "./Seek.css";
@@ -54,59 +52,35 @@ const Seek = (props) => {
 
     const handleClick = (e) => {
         e.preventDefault();
-        let helpTab = [];
-        recipes.forEach((recipe) => {
-            let count = 0;
-            Object.entries(state).map((data) => {
-                if (data[1] === true) {
-                    if (recipe.ingredients.indexOf(data[0]) > -1) {
-                        count++;
-                    }
-                    if (count >= 2 && helpTab.indexOf(recipe) < 0) {
-                        helpTab.push(recipe);
-                    }
-                }
-            });
+        
+        const selectedIngredients = Object.entries(state)
+            .filter(([_, checked]) => checked)
+            .map(([name]) => name);
+
+        const helpTab = recipes.filter(recipe => {
+            const matchCount = selectedIngredients.filter(ingredient => 
+                recipe.ingredients.includes(ingredient)
+            ).length;
+            return matchCount >= 2;
         });
+
         if (helpTab.length < 1) {
             setAlert(true);
-            setRecipesShow(helpTab);
         } else {
             setAlert(false);
-            setRecipesShow(helpTab);
         }
-        handleSort(helpTab);
+        
+        handleSort(helpTab, selectedIngredients);
     };
 
-    const handleSort = (helpTab) => {
-        let tab = [];
-        Object.entries(state).map((data) => {
-            if (data[1] === true) {
-                tab.push(data);
-            }
+    const handleSort = (helpTab, selectedIngredients) => {
+        const sorted = [...helpTab].sort((a, b) => {
+            const countA = a.ingredients.filter(ing => selectedIngredients.includes(ing)).length;
+            const countB = b.ingredients.filter(ing => selectedIngredients.includes(ing)).length;
+            return countB - countA;
         });
-
-        let tabSort = [];
-
-        helpTab.forEach((element2, index) => {
-            let count = 0;
-            element2.ingredients.forEach((ingredient, index2) => {
-                tab.forEach((element) => {
-                    if (ingredient == element[0]) {
-                        count++;
-                    }
-                });
-            });
-            tabSort.push({ index: index, counter: count });
-        });
-        tabSort.sort((a, b) => b.counter - a.counter);
-
-        let tabSorted = [];
-
-        tabSort.forEach((element) => {
-            tabSorted.push(helpTab[element.index]);
-        });
-        setRecipesShow(tabSorted);
+        
+        setRecipesShow(sorted);
     };
     const handleChange = (event) => {
         setState({ ...state, [event.target.name]: event.target.checked });

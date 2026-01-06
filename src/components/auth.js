@@ -18,27 +18,18 @@ export function withAuth(WrappedComponent) {
       };
 
       initialize();
-      setTimeout(() => {
-        this.unsubscribe = attachAuthListener(
-          function (user) {
-            if (user) {
-              this.setState({
-                user: user,
-                authState: authStates.LOGGED_IN,
-              });
-            } else {
-              this.setState({
-                user: user,
-                authState: authStates.LOGGED_OUT,
-              });
-            }
-          }.bind(this)
-        );
-      }, 1000);
+      this.unsubscribe = attachAuthListener((user) => {
+        this.setState({
+          user: user,
+          authState: user ? authStates.LOGGED_IN : authStates.LOGGED_OUT,
+        });
+      });
     }
 
     componentWillUnmount() {
-      // this.unsubscribe();
+      if (this.unsubscribe) {
+        this.unsubscribe();
+      }
     }
 
     render() {

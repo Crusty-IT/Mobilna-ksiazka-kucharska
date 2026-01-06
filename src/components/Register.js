@@ -1,103 +1,52 @@
 import React, { useState } from "react";
-import TextField from "@material-ui/core/TextField";
+import { Link, Redirect } from "react-router-dom";
+import { Button, TextField, Grid, Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Button, Container, Grid, Card, Typography, Box } from "@material-ui/core";
-import { Redirect } from "react-router-dom";
-
-import { authStates, withAuth } from "./auth";
-import { createNewUser } from "../utils/firebase";
+import "./login/Login.css";
 import Loader from "./loader/Loader";
-import { validateEmailPassword } from "../utils/helpers";
+import { validateEmailPassword } from "../utils/validators";
+import { signUp } from "../firebase/authMethods";
+import { authStates } from "./auth";
+import en from "../utils/i18n";
 
 const useStyles = makeStyles((theme) => ({
-    container: {
-        marginTop: theme.spacing(8),
-        marginBottom: theme.spacing(4),
-    },
-    card: {
-        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        borderRadius: 16,
-        boxShadow: "0 8px 32px 0 rgba(102, 126, 234, 0.37)",
-        padding: theme.spacing(4),
-    },
-    header: {
-        color: "white",
-        fontWeight: 700,
-        marginBottom: theme.spacing(1),
-        textAlign: "center",
-    },
-    subheader: {
-        color: "rgba(255, 255, 255, 0.8)",
-        textAlign: "center",
-        marginBottom: theme.spacing(3),
-    },
-    textField: {
-        width: "100%",
-        "& .MuiOutlinedInput-root": {
-            backgroundColor: "rgba(255, 255, 255, 0.9)",
-            borderRadius: 8,
-            "& fieldset": {
-                borderColor: "#a78bfa",
-            },
-            "&:hover fieldset": {
-                borderColor: "#8b5cf6",
-            },
-            "&.Mui-focused fieldset": {
-                borderColor: "#7c3aed",
-            },
+    root: {
+        "& .MuiTextField-root": {
+            margin: theme.spacing(0),
+            width: "100%",
         },
-        "& .MuiInputLabel-root": {
-            color: "#6366f1",
-            "&.Mui-focused": {
-                color: "#7c3aed",
-            },
-        },
-    },
-    button: {
-        background: "linear-gradient(45deg, #4f46e5 30%, #7c3aed 90%)",
-        borderRadius: 8,
-        border: 0,
-        color: "white",
-        height: 48,
-        padding: "0 30px",
-        boxShadow: "0 3px 15px 2px rgba(79, 70, 229, .3)",
-        fontWeight: 600,
-        textTransform: "none",
-        fontSize: "1rem",
-        width: "100%",
-        transition: "all 0.3s ease",
-        "&:hover": {
-            background: "linear-gradient(45deg, #4338ca 30%, #6d28d9 90%)",
-            transform: "translateY(-2px)",
-            boxShadow: "0 5px 20px 2px rgba(79, 70, 229, .4)",
-        },
-    },
-    errorBox: {
-        backgroundColor: "#fee2e2",
-        border: "1px solid #fca5a5",
-        borderRadius: 8,
-        padding: theme.spacing(2),
-        color: "#dc2626",
     },
 }));
 
-const Register = ({ authState }) => {
+const Register = (props) => {
     const classes = useStyles();
     const [error, setError] = useState("");
-    const [values, setValues] = useState({ email: "", password: "" });
+    const [values, setValues] = useState({ 
+        email: "", 
+        password: "", 
+        confirmPassword: "" 
+    });
 
     const handleInputChange = (event) => {
-        const { name, value } = event.target;
-        setValues((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+        
+        setValues({
+            ...values,
+            [name]: value
+        });
 
         if (error) setError("");
     };
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
+
+        if (values.password !== values.confirmPassword) {
+            setError(en.ERRORS.PASSWORD_MISMATCH);
+            return;
+        }
 
         const errorMsg = validateEmailPassword(values.email, values.password);
 
@@ -106,90 +55,109 @@ const Register = ({ authState }) => {
             return;
         }
 
-        try {
-            await createNewUser(values.email, values.password);
-            console.log("Zarejestrowano pomyślnie!");
-        } catch (e) {
-            console.error("Błąd podczas rejestracji:", e);
-            if (e.code === "auth/email-already-in-use") {
-                setError("Adres e-mail jest już w użyciu");
-            } else {
-                setError("Wystąpił błąd podczas rejestracji. Spróbuj ponownie.");
-            }
-        }
+        signUp(values.email, values.password)
+            .catch((e) => {
+                setError("Błąd podczas rejestracji. Spróbuj ponownie.");
+            });
     };
 
-
-    if (authState === authStates.INITIAL_VALUE) {
+    if (props.authState === authStates.INITIAL_VALUE) {
         return <Loader />;
     }
 
-    if (authState === authStates.LOGGED_IN) {
-        return <Redirect to="/" />;
+    if (props.authState === authStates.LOGGED_IN) {
+        return <Redirect to="/"></Redirect>;
     }
 
     return (
-        <Container maxWidth="sm" className={classes.container}>
-            <Card className={classes.card} elevation={0}>
-                <Box mb={3}>
-                    <Typography variant="h4" component="h1" className={classes.header}>
-                        Rejestracja
-                    </Typography>
-                    <Typography variant="body2" className={classes.subheader}>
-                        Utwórz nowe konto
-                    </Typography>
-                </Box>
-
-                <form onSubmit={handleSubmit} noValidate>
-                    <Grid container spacing={3}>
-                        <Grid item xs={12}>
-                            <TextField
-                                className={classes.textField}
-                                onChange={handleInputChange}
-                                name="email"
-                                type="email"
-                                value={values.email}
-                                label="Adres e-mail"
-                                variant="outlined"
-                                required
-                            />
-                        </Grid>
-
-                        <Grid item xs={12}>
-                            <TextField
-                                className={classes.textField}
-                                onChange={handleInputChange}
-                                name="password"
-                                type="password"
-                                value={values.password}
-                                label="Hasło"
-                                variant="outlined"
-                                required
-                            />
-                        </Grid>
-
-                        {error && (
+        <div className="login-wrapper">
+            <Container className="login-container" maxWidth={false}>
+                <div className="login-header">
+                    <h1 className="login-title">Zarejestruj się</h1>
+                    <p className="login-subtitle">Utwórz nowe konto i zacznij gotować!</p>
+                </div>
+                <div className="login-card">
+                    <form className={classes.root} noValidate autoComplete="off">
+                        <Grid container spacing={3}>
                             <Grid item xs={12}>
-                                <Box className={classes.errorBox}>
-                                    <Typography variant="body2">{error}</Typography>
-                                </Box>
+                                <TextField
+                                    onChange={handleInputChange}
+                                    name="email"
+                                    type="email"
+                                    value={values.email}
+                                    id="email-input"
+                                    label="Adres e-mail"
+                                    variant="outlined"
+                                    fullWidth
+                                    className="login-input"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                />
                             </Grid>
-                        )}
-
-                        <Grid item xs={12}>
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                className={classes.button}
-                            >
-                                Zarejestruj się
-                            </Button>
+                            <Grid item xs={12}>
+                                <TextField
+                                    onChange={handleInputChange}
+                                    name="password"
+                                    type="password"
+                                    value={values.password}
+                                    id="password-input"
+                                    label="Hasło"
+                                    variant="outlined"
+                                    fullWidth
+                                    className="login-input"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    onChange={handleInputChange}
+                                    name="confirmPassword"
+                                    type="password"
+                                    value={values.confirmPassword}
+                                    id="confirm-password-input"
+                                    label="Potwierdź hasło"
+                                    variant="outlined"
+                                    fullWidth
+                                    className="login-input"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                />
+                            </Grid>
+                            {error && (
+                                <Grid item xs={12}>
+                                    <div className="login-error">
+                                        <p>{error}</p>
+                                    </div>
+                                </Grid>
+                            )}
+                            <Grid item xs={12}>
+                                <Button
+                                    onClick={handleSubmit}
+                                    variant="contained"
+                                    fullWidth
+                                    className="login-button"
+                                >
+                                    Zarejestruj się
+                                </Button>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <div className="login-footer">
+                                    <p className="login-footer-text">{en.FORM_FIELDS.SIGNUP_ALT_TEXT}</p>
+                                    <Link to="/logowanie" className="login-register-link">
+                                        Zaloguj się
+                                    </Link>
+                                </div>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </form>
-            </Card>
-        </Container>
+                    </form>
+                </div>
+            </Container>
+        </div>
     );
 };
 
-export default withAuth(Register);
+export default Register;

@@ -1,0 +1,24 @@
+{
+  "rules": {
+    "recipes": {
+      ".read": true,
+      ".write": false
+    },
+    "vegetables": {
+      ".read": true,
+      ".write": false
+    },
+    "pasta": {
+      ".read": true,
+      ".write": false
+    },
+    "other": {
+      ".read": true,
+      ".write": false
+    },
+    "groats": {
+      ".read": true,
+      ".write": false
+    }
+  }
+}

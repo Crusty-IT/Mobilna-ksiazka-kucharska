@@ -1,10 +1,9 @@
+import firebase from './firebaseIndex';
 
-export const authMethods = {
-    singin: (email, password, setToken, setErrors) => {
-       
-    },
-    singout: (email, password) => {},
-    singup: (email, password, setToken, setErrors) => {
-        
-    },
+export const signIn = async (email, password) => {
+    await firebase.auth().signInWithEmailAndPassword(email, password);
+};
+
+export const signUp = async (email, password) => {
+    await firebase.auth().createUserWithEmailAndPassword(email, password);
 };

@@ -17,7 +17,6 @@ export function initialize() {
 }
 
 export function attachAuthListener(handler) {
-  console.log(firebase)
   return firebase.auth().onAuthStateChanged((user) => {
     handler(user);
   });

@@ -35,45 +35,39 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar = (props) => {
     const classes = useStyles();
-    const [anchorEl, setAnchorEl] = useState(null);
     const [anchorEl1, setAnchorEl1] = useState(null);
     const [mobileView, setMobileView] = useState(false);
     const [open, setOpen] = useState(false);
     const isMenuOpen = Boolean(anchorEl1);
     useEffect(() => {
         const setResponsive = () => {
-            return window.innerWidth < 900
-                ? setMobileView(true)
-                : setMobileView(false);
+            setMobileView(window.innerWidth < 900);
         };
         setResponsive();
-        window.addEventListener("resize", () => setResponsive());
+        window.addEventListener("resize", setResponsive);
+        return () => window.removeEventListener("resize", setResponsive);
     }, []);
 
     const handleSignOut = () => {
         signOut()
-            .then(() => {
-                console.log("Signed Out");
-            })
             .catch((e) => {
-                console.log("Error signing out", e);
+                // handle error
             });
     };
 
     const handleProfileMenuOpen = (event) => {
         setAnchorEl1(event.currentTarget);
     };
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
     const handleMenuClose = () => {
         setAnchorEl1(null);
+    };
+
+    const handleLogout = () => {
+        handleMenuClose();
         handleSignOut();
     };
+
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -93,7 +87,7 @@ const Navbar = (props) => {
             onClose={handleMenuClose}
             className="navbar-user-menu"
         >
-            <MenuItem onClick={handleMenuClose} className="navbar-menu-item-logout">
+            <MenuItem onClick={handleLogout} className="navbar-menu-item-logout">
                 Wyloguj
             </MenuItem>
         </Menu>
